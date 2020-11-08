@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
@@ -43,21 +44,24 @@ public class NewRound : MonoBehaviour
         Create.gameObject.SetActive(false);
     }
 
-    public void OnStandard() {
+    public void OnStandard()
+    {
         Title.SetText("New Round: Standard 6 Holes");
         FirstToSecond();
 
         Players.SetNumRounds(6);
     }
 
-    public void OnFull() {
+    public void OnFull()
+    {
         Title.SetText("New Round: Full 9 Holes");
         FirstToSecond();
 
         Players.SetNumRounds(9);
     }
 
-    public void OnCustom() {
+    public void OnCustom()
+    {
         Title.SetText("New Round: Custom X Holes");
         // XXX
         FirstToSecond();
@@ -75,10 +79,16 @@ public class NewRound : MonoBehaviour
     public void NumPlayers(int num)
     {
         numPlayers = num;
-
+        var button = GameObject.Find(num + "").GetComponent<Button>();
+        if (button)
+        {
+            button.Select();
+            button.OnSelect(null);
+        }
         Players.SetNumPlayers(num);
     }
-    public void ChoosePlayers() {
+    public void ChoosePlayers()
+    {
         ActivatePlayerNames();
         PopUp.gameObject.SetActive(false);
     }
@@ -91,6 +101,14 @@ public class NewRound : MonoBehaviour
 
     public void CreateScorecard()
     {
-        Overlay.CreateScorecard();
+        bool allDone = true;
+
+        for (int i = 0; i < numPlayers; i++)
+        {
+            string name = playerNames[i].GetComponent<TMP_InputField>().text;
+            allDone = allDone && name != null && name != "";
+        }
+
+        if (allDone) Overlay.CreateScorecard();
     }
 }

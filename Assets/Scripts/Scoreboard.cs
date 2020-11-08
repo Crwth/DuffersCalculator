@@ -12,6 +12,8 @@ public class Scoreboard : MonoBehaviour
     public PlayerCard[] playerCards;
     public Par par;
     public Button button;
+    public RectTransform BannerCanvas;
+
     private bool gameStarted = false;
 
     private int numPlayers { get { return players.NumPlayers; } }
@@ -79,6 +81,8 @@ public class Scoreboard : MonoBehaviour
         for (int player = 0; player < numPlayers; player++)
         {
             var playerCard = playerCards[player];
+            playerCard.Finished = true;
+            playerCard.DisableScores();
             playerCard.UpdateWithPars(par.Pars);
 
             if (playerCard.player.Total < lowestScore)
@@ -95,5 +99,8 @@ public class Scoreboard : MonoBehaviour
             }
         }
 
+        BannerCanvas.gameObject.SetActive(true);
+        BannerCanvas.GetComponent<Banner>().WinningScore = lowestScore;
+        button.gameObject.SetActive(false);
     }
 }

@@ -9,7 +9,7 @@ public class LoadScreen : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        StartCoroutine(LoadInXSeconds(5));
+        StartCoroutine(LoadInXSeconds(2));
     }
 
     IEnumerator LoadInXSeconds(int x)

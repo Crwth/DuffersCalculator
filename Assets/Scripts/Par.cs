@@ -76,6 +76,7 @@ public class Par : MonoBehaviour
     {
         get
         {
+            if (Pars == null) return false;
             return Pars.ToList().All(par => par != 0);
         }
     }

@@ -18,6 +18,8 @@ public class PlayerCard : MonoBehaviour
     public int Tees { get { return player.Tees; } }
     public int Total { get { return player.Total; } }
 
+    public bool Finished { get; set; }
+
     private bool firstSet = false;
 
     // Start is called before the first frame update
@@ -37,7 +39,7 @@ public class PlayerCard : MonoBehaviour
         if (player != null)
         {
             if (Subtotal != 0) Subtotalfield.SetText($"{Subtotal}");
-            if (Total != 0) Totalfield.SetText($"{Total}");
+            if (Finished && Total != 0) Totalfield.SetText($"{Total}");
 
             if (!firstSet)
             {
@@ -50,71 +52,89 @@ public class PlayerCard : MonoBehaviour
 
     public void EnableScores()
     {
-        for (int i = 0; i < player.numRounds; i++)
+        if (player)
         {
-            scores[i].interactable = true;
+            for (int i = 0; i < player.numRounds; i++)
+            {
+                scores[i].interactable = true;
+            }
+            for (int i = player.numRounds; i < scores.Length; i++)
+            {
+                scores[i].interactable = false;
+            }
+            Teesfield.interactable = true;
         }
-        for (int i = player.numRounds; i < scores.Length; i++)
+    }
+
+    public void DisableScores()
+    {
+        if (player)
         {
-            scores[i].interactable = false;
+            for (int i = 0; i < scores.Length; i++)
+            {
+                scores[i].interactable = false;
+            }
+            Teesfield.interactable = false;
         }
-        Teesfield.interactable = true;
     }
 
     public void UpdateScores()
     {
-        for (int i = 0; i < player.numRounds; i++)
+        if (player)
         {
-            string score = scores[i].text;
-            try
+            for (int i = 0; i < player.numRounds; i++)
             {
-                int scorevalue = int.Parse($"0{score}");
-                if (scorevalue == 0)
+                string score = scores[i].text;
+                try
+                {
+                    int scorevalue = int.Parse($"0{score}");
+                    if (scorevalue == 0)
+                    {
+                        if (player.Strokes[i] != 0)
+                            scores[i].text = $"{player.Strokes[i]}";
+                        else
+                            scores[i].text = "";
+                    }
+                    else
+                    {
+                        player.Strokes[i] = scorevalue;
+                        scores[i].text = $"{player.Strokes[i]}";
+                    }
+                }
+                catch (Exception)
                 {
                     if (player.Strokes[i] != 0)
                         scores[i].text = $"{player.Strokes[i]}";
                     else
                         scores[i].text = "";
                 }
+            }
+
+            /* Tees */
+            string tees = Teesfield.text;
+            try
+            {
+                int teesvalue = int.Parse($"{tees}");
+                if (teesvalue == 0)
+                {
+                    if (player.Tees != 0)
+                        Teesfield.text = $"{player.Tees}";
+                    else
+                        Teesfield.text = "";
+                }
                 else
                 {
-                    player.Strokes[i] = scorevalue;
-                    scores[i].text = $"{player.Strokes[i]}";
+                    player.Tees = teesvalue;
+                    Teesfield.text = $"{player.Tees}";
                 }
             }
             catch (Exception)
-            {
-                if (player.Strokes[i] != 0)
-                    scores[i].text = $"{player.Strokes[i]}";
-                else
-                    scores[i].text = "";
-            }
-        }
-
-        /* Tees */
-        string tees = Teesfield.text;
-        try
-        {
-            int teesvalue = int.Parse($"{tees}");
-            if (teesvalue == 0)
             {
                 if (player.Tees != 0)
                     Teesfield.text = $"{player.Tees}";
                 else
                     Teesfield.text = "";
             }
-            else
-            {
-                player.Tees = teesvalue;
-                Teesfield.text = $"{player.Tees}";
-            }
-        }
-        catch (Exception)
-        {
-            if (player.Tees != 0)
-                Teesfield.text = $"{player.Tees}";
-            else
-                Teesfield.text = "";
         }
     }
 

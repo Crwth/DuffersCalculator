@@ -12,7 +12,12 @@ public class NewRound : MonoBehaviour
 
     public RectTransform FirstPanel;
     public RectTransform SecondPanel;
+    public RectTransform CustomPanel;
     public TMP_Text Title;
+
+    public TMP_Text StandardText;
+    public TMP_Text FullText;
+    public TMP_Text CustomText;
 
     public RectTransform PopUp;
 
@@ -32,6 +37,12 @@ public class NewRound : MonoBehaviour
 
         Players = GameObject.Find("Players").GetComponent<Players>();
         Overlay = GameObject.Find("Overlay").GetComponent<Overlay>();
+    }
+
+    void Update() {
+        var baseSize = StandardText.fontSize;
+        FullText.fontSize = baseSize;
+        CustomText.fontSize = baseSize;
     }
 
     void FirstToSecond()
@@ -62,10 +73,14 @@ public class NewRound : MonoBehaviour
 
     public void OnCustom()
     {
-        Title.SetText("New Round: Custom X Holes");
-        // XXX
+        CustomPanel.gameObject.SetActive(true);
+    }
+
+    public void OnCustomCount(int rounds) {
+        Title.SetText($"New Round: Custom {rounds} Holes");
         FirstToSecond();
-        //Players.setNumRounds(x);
+
+        Players.SetNumRounds(rounds);
     }
 
     void ActivatePlayerNames()
@@ -89,8 +104,10 @@ public class NewRound : MonoBehaviour
     }
     public void ChoosePlayers()
     {
-        ActivatePlayerNames();
-        PopUp.gameObject.SetActive(false);
+        if (Players.NumPlayers > 0) {
+            ActivatePlayerNames();
+            PopUp.gameObject.SetActive(false);
+        }
     }
 
     public void SetPlayerName(int player)

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using System;
 
 public class Calculator : MonoBehaviour
 {
@@ -100,7 +101,12 @@ public class Calculator : MonoBehaviour
 
     public void numKey(string num)
     {
-        currentValue += num;
+        try {
+            var newValue = currentValue + num;
+            var newInt = int.Parse(newValue);
+            currentValue += num;
+        } catch (Exception e) {}
+        
     }
 
     public void opKey(string operation)

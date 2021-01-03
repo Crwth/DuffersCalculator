@@ -105,7 +105,7 @@ public class Calculator : MonoBehaviour
             var newValue = currentValue + num;
             var newInt = int.Parse(newValue);
             currentValue += num;
-        } catch (Exception e) {}
+        } catch (Exception) {}
         
     }
 

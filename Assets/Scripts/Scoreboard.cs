@@ -12,6 +12,7 @@ public class Scoreboard : MonoBehaviour
     public Par par;
     public Button button;
     public RectTransform BannerCanvas;
+    public RectTransform ConfirmWindow;
 
     private bool gameStarted = false;
 
@@ -64,9 +65,19 @@ public class Scoreboard : MonoBehaviour
         }
         else
         {
-            Score();
+            ConfirmWindow.gameObject.SetActive(true);
         }
     }
+
+    public void Yes() {
+        ConfirmWindow.gameObject.SetActive(false);
+        Score();
+    }
+
+    public void No() {
+        ConfirmWindow.gameObject.SetActive(false);
+    }
+
 
     public void UpdateScores()
     {

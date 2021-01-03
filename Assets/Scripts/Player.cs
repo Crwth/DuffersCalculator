@@ -14,7 +14,7 @@ public class Player : MonoBehaviour
     public int[] Strokes { get { return strokes; } }
     [SerializeField]
     private int tees;
-    public int Tees { get { return tees; } set { tees = value; } }
+    public int Tees { get { return tees; } set { tees = value < 0 ? value : -value; } }
 
     public int numRounds;
 
